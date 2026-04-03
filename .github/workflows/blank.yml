@@ -1,0 +1,24 @@
+name: Discord Bot
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '*/15 * * * *'  # alle 15 Minuten, damit Bot aktiv bleibt
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+    - name: Install dependencies
+      run: npm install
+    - name: Run bot
+      env:
+        DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      run: node bot.js
